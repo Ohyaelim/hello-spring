@@ -1,9 +1,6 @@
 package hello.hellospring.repository;
 
-
-import hello.hellospring.controller.repository.MemoryMemberRepository;
 import hello.hellospring.domain.Member;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,54 +9,54 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 class MemoryMemberRepositoryTest {
-    MemoryMemberRepository repository =new MemoryMemberRepository();
 
-    //test 끝날 때마다 깔끔하게 지워줘서 다른 test에 영향받지 않게 하는 메소드
+    MemoryMemberRepository repository = new MemoryMemberRepository();
+
     @AfterEach
-    public void afterEach(){
+    public void afterEach() {
         repository.clearStore();
     }
 
     @Test
-    public void save(){
+    public void save() {
+//given
         Member member = new Member();
         member.setName("spring");
-
+//when
         repository.save(member);
-
+//then
         Member result = repository.findById(member.getId()).get();
-        //System.out.println("result = " + (result == member));
-        //Assertions.assertEquals(member, result);
         assertThat(member).isEqualTo(result);
     }
 
     @Test
-    public void findByName(){
+    public void findByName() {
+//given
         Member member1 = new Member();
         member1.setName("spring1");
         repository.save(member1);
-
         Member member2 = new Member();
         member2.setName("spring2");
         repository.save(member2);
-
+//when
         Member result = repository.findByName("spring1").get();
-
-        assertThat(result).isEqualTo(member1);
+        //then
+         assertThat(result).isEqualTo(member1);
     }
 
     @Test
-    public void findByAll(){
+    public void findAll() {
+//given
         Member member1 = new Member();
         member1.setName("spring1");
         repository.save(member1);
-
         Member member2 = new Member();
         member2.setName("spring2");
         repository.save(member2);
-
+//when
         List<Member> result = repository.findAll();
-
+//then
         assertThat(result.size()).isEqualTo(2);
     }
 }
+

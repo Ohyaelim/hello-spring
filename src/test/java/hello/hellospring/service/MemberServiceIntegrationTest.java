@@ -1,34 +1,30 @@
 package hello.hellospring.service;
 
 import hello.hellospring.domain.Member;
+import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.repository.MemoryMemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
+@SpringBootTest
+//데이터 베이스는 transaction 이 있어. ( aftereach 필요없어)커밋하기 전까지 반영이 안돼
+@Transactional //테스트 실행시 transaction 을 실행하고 db data 를 인서트쿼리하고 넣은다음
+    //테스트 끝나면 roll back 해서 db 에 넣은 데이터가 반영 안되고 지워
 class MemberServiceIntegrationTest {
 
-    MemberService memberService;
+    @Autowired MemberService memberService;
     //clear 를 해주고 싶은데 멤버서비스밖에 없으니 멤버 리포지토리를 갖고 온다!
-    MemoryMemberRepository memoryRepository;
+    @Autowired MemberRepository memoryRepository;
+    //이제는 스프링 컨테이너한테 멤버 서비스, 멤버 리포지터리 내놔 해야함
 
-    //test 실행마다 new 를 해주는게 아니라 만들고 넣어서 멤버서비스로 넣어주는.. 그런 --> 같은 멤버 리포지토리사용
-    //직접 new 하지 않고 외부에서 넣어준다 - dependency injection
-    @BeforeEach
-    public void beforeEach(){  
-        memoryRepository = new MemoryMemberRepository();
-        memberService = new MemberService(memoryRepository);
-    }
 
-    @AfterEach
-    public void afterEach(){
-        memoryRepository.clearStore();
-    }
 
     //test 는 한글 써도 된다.
     @Test
@@ -69,11 +65,4 @@ class MemberServiceIntegrationTest {
         //then
     }
 
-    @Test
-    void findMembers() {
-    }
-
-    @Test
-    void findOne() {
-    }
 }

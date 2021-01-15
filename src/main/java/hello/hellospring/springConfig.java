@@ -1,5 +1,6 @@
 package hello.hellospring;
 
+import hello.hellospring.aop.TimeTraceAop;
 import hello.hellospring.repository.MemberRepository;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,12 @@ public class springConfig {
     public MemberService memberService(){
         return new MemberService(memberRepository);
     }
+//
+//    @Bean
+//    public TimeTraceAop timeTraceAop(){
+//        return new TimeTraceAop();
+//    }
+//    //아니면 timetraceaop 에서 @Component 스캔 써도 된다네
 
 //    @Bean
 //    public MemberRepository memberRepository(){
